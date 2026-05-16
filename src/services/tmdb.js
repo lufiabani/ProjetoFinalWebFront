@@ -40,7 +40,7 @@ export async function searchMovies(query) {
   return data.results ?? [];
 }
 
-// Detalhes completos (genres, runtime) — a pesquisa muitas vezes não traz género suficiente para a nossa API.
+// Detalhes completos (genres, runtime) — a pesquisa muitas vezes não traz gênero suficiente para a nossa API.
 export async function getMovieDetails(movieId) {
   if (movieId == null || movieId <= 0) {
     throw new Error('ID do filme TMDB inválido.');

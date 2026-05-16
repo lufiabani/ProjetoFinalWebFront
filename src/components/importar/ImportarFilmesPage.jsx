@@ -37,7 +37,7 @@ export default function ImportarFilmesPage() {
   const [generos, setGeneros] = useState([]);
   const { success, error: toastError, info } = useToast();
 
-  // Ao abrir esta página: carrega géneros e, com sessão + chave TMDB, sincroniza a lista oficial (idempotente) — sem botão.
+  // Ao abrir esta página: carrega gêneros e, com sessão + chave TMDB, sincroniza a lista oficial (idempotente) — sem botão.
   useEffect(() => {
     let cancelado = false;
     (async () => {
@@ -52,7 +52,7 @@ export default function ImportarFilmesPage() {
             lista = await listarGeneros();
             if (!cancelado) setGeneros(Array.isArray(lista) ? lista : []);
           } catch {
-            /* mantém a lista já obtida; importação de filmes cria géneros em falta na mesma */
+            /* mantém a lista já obtida; importação de filmes cria gêneros em falta na mesma */
           }
         }
       } catch {
@@ -133,7 +133,7 @@ export default function ImportarFilmesPage() {
           info('Este filme já está na plataforma.');
           return;
         }
-        // search/movie muitas vezes não traz géneros — pedimos detalhes ao TMDB; a API cria o género na base se for novo.
+        // search/movie muitas vezes não traz gêneros — pedimos detalhes ao TMDB; a API cria o gênero na base se for novo.
         let fonte = movie;
         if (extrairPrimeiroGeneroTmdbId(fonte) == null && temChave) {
           try {
@@ -145,7 +145,7 @@ export default function ImportarFilmesPage() {
         }
         if (extrairPrimeiroGeneroTmdbId(fonte) == null) {
           toastError(
-            'O TMDB não indicou género para este filme. Escolhe outro título ou verifica os dados no TMDB.',
+            'O TMDB não indicou gênero para este filme. Escolhe outro título ou verifica os dados no TMDB.',
           );
           return;
         }
@@ -214,16 +214,16 @@ export default function ImportarFilmesPage() {
         <p className="mb-6 rounded-xl border border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs text-slate-600">
           {getKeycloak()?.authenticated ? (
             <>
-              Com sessão iniciada, a <strong>lista oficial de géneros do TMDB</strong> é atualizada automaticamente ao
-              abrires esta página. Ao importar um filme, géneros em falta são criados na mesma.
+              Com sessão iniciada, a <strong>lista oficial de gêneros do TMDB</strong> é atualizada automaticamente ao
+              abrires esta página. Ao importar um filme, gêneros em falta são criados na mesma.
               {generos.length > 0 ? (
-                <span className="text-slate-500"> ({generos.length} género(s) na base.)</span>
+                <span className="text-slate-500"> ({generos.length} gênero(s) na base.)</span>
               ) : null}
             </>
           ) : (
             <>
-              <strong>Inicia sessão</strong> para carregar a lista completa de géneros do TMDB; mesmo sem isso, podes
-              importar filmes — cada filme cria o seu género na base se for preciso.
+              <strong>Inicia sessão</strong> para carregar a lista completa de gêneros do TMDB; mesmo sem isso, podes
+              importar filmes — cada filme cria o seu gênero na base se for preciso.
             </>
           )}
         </p>

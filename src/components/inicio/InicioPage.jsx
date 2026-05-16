@@ -270,7 +270,7 @@ export default function InicioPage() {
               <div className="flex flex-wrap items-center justify-center gap-2 rounded-2xl bg-black/15 px-3 py-2.5 text-xs text-white/95 ring-1 ring-white/25 sm:justify-start sm:text-sm">
                 <Sparkles className="h-4 w-4 shrink-0 text-amber-200" />
                 <span>
-                  Dica: ordena por <span className="font-semibold">Melhor nota TMDB</span> ou filtra por género para
+                  Dica: ordena por <span className="font-semibold">Melhor nota TMDB</span> ou filtra por gênero para
                   afinar a tua descoberta.
                 </span>
               </div>
@@ -410,13 +410,13 @@ export default function InicioPage() {
                 </label>
 
                 <label className="flex min-w-0 flex-1 flex-col gap-1 sm:min-w-[180px] sm:max-w-[220px]">
-                  <span className="sr-only">Género</span>
+                  <span className="sr-only">Gênero</span>
                   <select
                     value={generoFiltroId}
                     onChange={(e) => setGeneroFiltroId(e.target.value)}
                     className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-500/20"
                   >
-                    <option value="">Todos os géneros</option>
+                    <option value="">Todos os gêneros</option>
                     {generos.map((g) => (
                       <option key={g.id} value={g.id}>
                         {g.nome}

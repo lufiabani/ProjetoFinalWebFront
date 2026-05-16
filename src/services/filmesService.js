@@ -59,7 +59,7 @@ export async function upsertFilmeCache(payload) {
   return data;
 }
 
-// Pesquisa TMDB traz genre_ids; detalhes traz genres[].id — usamos o primeiro para cumprir regra “um género” na API.
+// Pesquisa TMDB traz genre_ids; detalhes traz genres[].id — usamos o primeiro para cumprir regra “um gênero” na API.
 export function extrairPrimeiroGeneroTmdbId(movie) {
   if (Array.isArray(movie.genre_ids) && movie.genre_ids.length > 0) {
     const n = Number(movie.genre_ids[0]);
@@ -72,7 +72,7 @@ export function extrairPrimeiroGeneroTmdbId(movie) {
   return null;
 }
 
-// Nome do primeiro género (só em detalhes completos) — enviado à API quando cria género novo por TmdbId.
+// Nome do primeiro gênero (só em detalhes completos) — enviado à API quando cria gênero novo por TmdbId.
 export function extrairPrimeiroGeneroNome(movie) {
   if (Array.isArray(movie.genres) && movie.genres.length > 0 && movie.genres[0].name != null) {
     return String(movie.genres[0].name).trim() || null;
@@ -80,7 +80,7 @@ export function extrairPrimeiroGeneroNome(movie) {
   return null;
 }
 
-// Corpo de POST /api/filmes/cache: preferimos generoTmdbId (+ generoNome); a API cria o género em falta.
+// Corpo de POST /api/filmes/cache: preferimos generoTmdbId (+ generoNome); a API cria o gênero em falta.
 export function mapTmdbSearchResultToFilme(movie) {
   const release = movie.release_date?.length >= 10 ? movie.release_date.slice(0, 10) : null;
   const generoTmdbId = extrairPrimeiroGeneroTmdbId(movie);
