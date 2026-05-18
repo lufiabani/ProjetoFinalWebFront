@@ -133,9 +133,9 @@ export default function ImportarFilmesPage() {
           info('Este filme já está na plataforma.');
           return;
         }
-        // search/movie muitas vezes não traz gêneros — pedimos detalhes ao TMDB; a API cria o gênero na base se for novo.
+        // Detalhes TMDB trazem runtime, external_ids (imdb) e genres — a pesquisa não inclui runtime nem imdb.
         let fonte = movie;
-        if (extrairPrimeiroGeneroTmdbId(fonte) == null && temChave) {
+        if (temChave) {
           try {
             const detalhes = await getMovieDetails(movie.id);
             fonte = { ...movie, ...detalhes };

@@ -33,6 +33,10 @@ export default function FilmeDetalheModal({
   favorito,
   onFechar,
   onToggleFavorito,
+  // Opcional: notifica o feed (ex. comentários em destaque) sem re-fetch da página.
+  onComentarioPublicado,
+  onComentarioAtualizado,
+  onComentarioApagado,
 }) {
   const { success, error: toastError } = useToast();
   const [comentarios, setComentarios] = useState([]);
@@ -93,6 +97,7 @@ export default function FilmeDetalheModal({
       try {
         const novo = await criarComentario({ filmeId: filme.id, corpo });
         setComentarios((prev) => [novo, ...prev]);
+        onComentarioPublicado?.(novo, filme);
         setTextoNovo('');
         success('Comentário publicado.');
       } catch (err) {
@@ -101,7 +106,7 @@ export default function FilmeDetalheModal({
         setEnviando(false);
       }
     },
-    [filme?.id, textoNovo, enviando, success, toastError],
+    [filme, textoNovo, enviando, success, toastError, onComentarioPublicado],
   );
 
   const iniciarEdicao = useCallback((c) => {
@@ -127,13 +132,11 @@ export default function FilmeDetalheModal({
     }
     setGravandoEdicao(true);
     try {
-      await editarComentario(editingId, corpo);
-      const agora = new Date().toISOString();
+      const atualizado = await editarComentario(editingId, corpo);
       setComentarios((prev) =>
-        prev.map((c) =>
-          c.id === editingId ? { ...c, corpo, editadoEm: agora } : c,
-        ),
+        prev.map((c) => (c.id === editingId ? { ...c, ...atualizado } : c)),
       );
+      onComentarioAtualizado?.(atualizado);
       cancelarEdicao();
       success('Comentário atualizado.');
     } catch (err) {
@@ -141,7 +144,7 @@ export default function FilmeDetalheModal({
     } finally {
       setGravandoEdicao(false);
     }
-  }, [editingId, textoEdicao, gravandoEdicao, cancelarEdicao, success, toastError]);
+  }, [editingId, textoEdicao, gravandoEdicao, cancelarEdicao, success, toastError, onComentarioAtualizado]);
 
   const confirmarApagar = useCallback(async () => {
     if (apagarId == null || apagando) return;
@@ -149,6 +152,7 @@ export default function FilmeDetalheModal({
     try {
       await apagarComentario(apagarId);
       setComentarios((prev) => prev.filter((c) => c.id !== apagarId));
+      onComentarioApagado?.(apagarId);
       setApagarId(null);
       success('Comentário removido.');
     } catch (err) {
@@ -156,7 +160,7 @@ export default function FilmeDetalheModal({
     } finally {
       setApagando(false);
     }
-  }, [apagarId, apagando, success, toastError]);
+  }, [apagarId, apagando, success, toastError, onComentarioApagado]);
 
   if (!aberto || !filme) return null;
 

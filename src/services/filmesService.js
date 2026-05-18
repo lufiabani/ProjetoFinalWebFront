@@ -100,7 +100,7 @@ export function mapTmdbSearchResultToFilme(movie) {
       notaMediaTmdb: movie.vote_average != null ? Number(movie.vote_average) : null,
       totalVotosTmdb: movie.vote_count ?? null,
       idiomaOriginal: movie.original_language || null,
-      imdbId: null,
+      imdbId: movie.external_ids?.imdb_id ?? null,
       metadadosTmdbJson: JSON.stringify({ popularity: movie.popularity }),
     },
   };

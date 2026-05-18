@@ -40,12 +40,12 @@ export async function searchMovies(query) {
   return data.results ?? [];
 }
 
-// Detalhes completos (genres, runtime) — a pesquisa muitas vezes não traz gênero suficiente para a nossa API.
+// Detalhes completos (genres, runtime, imdb via external_ids) — a pesquisa não traz runtime nem imdb_id.
 export async function getMovieDetails(movieId) {
   if (movieId == null || movieId <= 0) {
     throw new Error('ID do filme TMDB inválido.');
   }
-  return tmdbFetch(`/movie/${movieId}`, {});
+  return tmdbFetch(`/movie/${movieId}`, { append_to_response: 'external_ids' });
 }
 
 export async function getMovieGenreList() {
