@@ -181,6 +181,40 @@ export default function InicioPage() {
     setModalFilme(null);
   }, []);
 
+  // Atualiza destaques no topo sem novo GET — alinhado ao formato de listarComentariosDestaque.
+  const inserirComentarioEmDestaque = useCallback((comentario, filme) => {
+    if (!comentario?.id || !filme?.id) return;
+    const item = {
+      id: comentario.id,
+      filmeId: filme.id,
+      tituloFilme: filme.titulo ?? '',
+      posterPath: filme.posterPath ?? null,
+      corpo: comentario.corpo,
+      criadoEm: comentario.criadoEm,
+      autorNome: comentario.autorNome,
+    };
+    setComentariosDestaque((prev) => {
+      const semDuplicado = prev.filter((c) => c.id !== item.id);
+      return [item, ...semDuplicado].slice(0, 12);
+    });
+  }, []);
+
+  const atualizarComentarioEmDestaque = useCallback((comentario) => {
+    if (!comentario?.id) return;
+    setComentariosDestaque((prev) =>
+      prev.map((c) =>
+        c.id === comentario.id
+          ? { ...c, corpo: comentario.corpo, autorNome: comentario.autorNome ?? c.autorNome }
+          : c,
+      ),
+    );
+  }, []);
+
+  const removerComentarioEmDestaque = useCallback((comentarioId) => {
+    if (comentarioId == null) return;
+    setComentariosDestaque((prev) => prev.filter((c) => c.id !== comentarioId));
+  }, []);
+
   const abrirModalPorId = useCallback(
     async (filmeId) => {
       try {
@@ -498,6 +532,9 @@ export default function InicioPage() {
         favorito={favoritoModal}
         onFechar={fecharModal}
         onToggleFavorito={modalFilme ? () => alternarComAtualizarFeed(modalFilme.id) : undefined}
+        onComentarioPublicado={inserirComentarioEmDestaque}
+        onComentarioAtualizado={atualizarComentarioEmDestaque}
+        onComentarioApagado={removerComentarioEmDestaque}
       />
     </div>
   );

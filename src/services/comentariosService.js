@@ -21,7 +21,8 @@ export async function criarComentario(payload) {
 }
 
 export async function editarComentario(id, corpo) {
-  await api.put(`/comentarios/${id}`, { corpo });
+  const { data } = await api.put(`/comentarios/${id}`, { corpo });
+  return data;
 }
 
 export async function apagarComentario(id) {
