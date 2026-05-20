@@ -1,21 +1,7 @@
 // FilmeGridCard.jsx — variante em grelha do mesmo contrato de props que FilmeFeedCard.
 import { Heart, Star, Users } from 'lucide-react';
 import { posterUrl as tmdbPoster } from '../../services/tmdb';
-
-function ano(dataLancamento) {
-  if (!dataLancamento) return null;
-  const s = String(dataLancamento);
-  const y = s.slice(0, 4);
-  return /^\d{4}$/.test(y) ? y : null;
-}
-
-function rotularVotosTmdb(total) {
-  if (total == null || Number.isNaN(Number(total))) return null;
-  const n = Number(total);
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, '')}k`;
-  return String(n);
-}
+import { extrairAno, formatarVotosTmdb } from '../../utils/filmeHelpers';
 
 export default function FilmeGridCard({
   filmeId,
@@ -58,7 +44,7 @@ export default function FilmeGridCard({
           </h3>
           <div className="mt-1 flex flex-col gap-1 text-xs text-slate-500">
             <div className="flex flex-wrap items-center gap-1.5">
-              {ano(dataLancamento) ? <span>{ano(dataLancamento)}</span> : null}
+              {extrairAno(dataLancamento) ? <span>{extrairAno(dataLancamento)}</span> : null}
               {generoNome ? (
                 <span className="max-w-full truncate rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-700">
                   {generoNome}
@@ -71,8 +57,8 @@ export default function FilmeGridCard({
                 >
                   <Star className="h-3 w-3 fill-current" />
                   <span className="font-semibold">{Number(notaMediaTmdb).toFixed(1)}</span>
-                  {rotularVotosTmdb(totalVotosTmdb) ? (
-                    <span className="font-normal text-slate-500">({rotularVotosTmdb(totalVotosTmdb)})</span>
+                  {formatarVotosTmdb(totalVotosTmdb) ? (
+                    <span className="font-normal text-slate-500">({formatarVotosTmdb(totalVotosTmdb)})</span>
                   ) : null}
                 </span>
               ) : null}

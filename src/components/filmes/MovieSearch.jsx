@@ -4,16 +4,7 @@ import { Search, Loader2, Library } from 'lucide-react';
 import { buscarFilmesLocais } from '../../services/filmesService';
 import { mensagemErroApi } from '../../services/api';
 import { posterUrl } from '../../services/tmdb';
-
-// Debounce do texto — evita martelar /filmes/buscar enquanto o utilizador escreve.
-function useDebouncedValue(value, delay) {
-  const [d, setD] = useState(value);
-  useEffect(() => {
-    const t = setTimeout(() => setD(value), delay);
-    return () => clearTimeout(t);
-  }, [value, delay]);
-  return d;
-}
+import { useDebouncedValue } from '../../hooks/useDebouncedValue';
 
 export default function MovieSearch() {
   const [q, setQ] = useState('');

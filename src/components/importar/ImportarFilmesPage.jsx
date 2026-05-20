@@ -13,16 +13,7 @@ import { mensagemErroApi } from '../../services/api';
 import { getKeycloak } from '../../keycloak';
 import { getMovieDetails, getTmdbApiKey, posterUrl, searchMovies } from '../../services/tmdb';
 import { useToast } from '../../hooks/useToast';
-
-// Atrasa o termo de pesquisa para não disparar uma requisição por tecla (alivia API e TMDB).
-function useDebouncedValue(value, delay) {
-  const [d, setD] = useState(value);
-  useEffect(() => {
-    const t = setTimeout(() => setD(value), 400);
-    return () => clearTimeout(t);
-  }, [value, delay]);
-  return d;
-}
+import { useDebouncedValue } from '../../hooks/useDebouncedValue';
 
 export default function ImportarFilmesPage() {
   const [q, setQ] = useState('');
