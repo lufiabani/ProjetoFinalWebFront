@@ -298,14 +298,14 @@ export default function InicioPage() {
             </div>
             <div className="flex min-w-0 flex-1 flex-col justify-center gap-4 text-center sm:text-left">
               <p className="text-sm font-medium leading-relaxed text-white/95 sm:text-base">
-                Explora títulos na base, compara a nota TMDB com o burburinho da comunidade e deixa o teu comentário
+                Explore títulos na base, compare a nota TMDB com o burburinho da comunidade e deixe seu comentário
                 nos filmes que te marcam.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-2 rounded-2xl bg-black/15 px-3 py-2.5 text-xs text-white/95 ring-1 ring-white/25 sm:justify-start sm:text-sm">
                 <Sparkles className="h-4 w-4 shrink-0 text-amber-200" />
                 <span>
-                  Dica: ordena por <span className="font-semibold">Melhor nota TMDB</span> ou filtra por gênero para
-                  afinar a tua descoberta.
+                  Dica: ordene por <span className="font-semibold">Melhor nota TMDB</span> ou filtre por gênero para
+                  afinar a sua descoberta.
                 </span>
               </div>
             </div>
@@ -328,7 +328,7 @@ export default function InicioPage() {
             </div>
           ) : comentariosDestaque.length === 0 ? (
             <p className="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-6 text-center text-sm text-slate-500">
-              Ainda não há comentários públicos. Seja o primeiro a partilhar uma opinião num filme.
+              Ainda não há comentários públicos. Seja o primeiro a compartilhar uma opinião num filme.
             </p>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -387,7 +387,7 @@ export default function InicioPage() {
             </div>
           ) : filmes.length === 0 ? (
             <p className="rounded-2xl border border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-500">
-              Ainda não há filmes na base. Quando existirem registos (por exemplo após sincronização ou
+              Ainda não há filmes na base. Quando existirem registros (por exemplo após sincronização ou
               importação), aparecem aqui para todos comentarem.
             </p>
           ) : (
@@ -474,7 +474,7 @@ export default function InicioPage() {
 
               {filmesOrdenados.length === 0 ? (
                 <p className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-6 text-center text-sm text-amber-900">
-                  Nenhum filme corresponde ao filtro. Limpa o texto ou experimenta outro termo.
+                  Nenhum filme corresponde ao filtro. Limpe o texto ou experimente outro termo.
                 </p>
               ) : vistaFilme === 'grid' ? (
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4">

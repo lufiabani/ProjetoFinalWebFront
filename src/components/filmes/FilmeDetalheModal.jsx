@@ -74,7 +74,7 @@ export default function FilmeDetalheModal({
       if (!filme?.id || enviando) return;
       const corpo = textoNovo.trim();
       if (!corpo) {
-        toastError('Escreve algo antes de publicar.');
+        toastError('Escreva algo antes de publicar.');
         return;
       }
       if (corpo.length > MAX_CORPO) {
@@ -239,7 +239,7 @@ export default function FilmeDetalheModal({
                 }`}
               >
                 <Heart className={`w-5 h-5 ${favorito ? 'fill-current' : ''}`} />
-                {favorito ? 'Nos teus favoritos' : 'Adicionar aos favoritos'}
+                {favorito ? 'Nos seus favoritos' : 'Adicionar aos favoritos'}
               </button>
             ) : null}
 
@@ -269,7 +269,7 @@ export default function FilmeDetalheModal({
         onClose={() => !apagando && setApagarId(null)}
         onConfirm={confirmarApagar}
         title="Apagar comentário"
-        message="Tens a certeza? Esta ação não pode ser desfeita."
+        message="Tem certeza? Esta ação não pode ser desfeita."
       />
     </>
   );

@@ -1,4 +1,4 @@
-// TopBar.jsx — barra fixa: menu (abre drawer em todos os ecrãs), marca (logo) e pesquisa na base.
+// TopBar.jsx — barra fixa: menu (abre drawer em todas as telas), marca (logo) e pesquisa na base.
 import { Link } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import MovieSearch from '../filmes/MovieSearch';
@@ -28,7 +28,7 @@ export default function TopBar({ onOpenNav, sidebarOpen = false }) {
         />
       </Link>
       <p className="hidden min-w-0 truncate text-xs text-slate-500 lg:block lg:max-w-[10rem] xl:max-w-none">
-        Partilha opiniões sobre o que vês na comunidade.
+        Compartilhe opiniões sobre o que vê na comunidade.
       </p>
       <div className="min-w-0 flex-1 md:ml-auto md:max-w-xl">
         <MovieSearch />

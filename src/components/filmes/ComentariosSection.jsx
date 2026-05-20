@@ -67,7 +67,7 @@ export default function ComentariosSection({
           id="novo-comentario"
           value={textoNovo}
           onChange={(e) => setTextoNovo(e.target.value)}
-          placeholder="Escreve um comentário…"
+          placeholder="Escreva um comentário…"
           rows={3}
           maxLength={MAX_CORPO}
           disabled={enviando}

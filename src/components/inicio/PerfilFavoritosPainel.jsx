@@ -17,7 +17,7 @@ export default function PerfilFavoritosPainel({ perfil, perfilErro, favoritosLis
             ) : perfil ? (
               <>
                 <p className="truncate font-semibold">
-                  {perfil.nomeExibicao || perfil.email || 'Utilizador'}
+                  {perfil.nomeExibicao || perfil.email || 'Usuário'}
                 </p>
                 <p className="truncate text-xs text-slate-400">{perfil.email}</p>
               </>
@@ -28,10 +28,10 @@ export default function PerfilFavoritosPainel({ perfil, perfilErro, favoritosLis
         </div>
       </div>
       <div className="p-4">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Os teus favoritos</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Seus favoritos</p>
         {favoritosLista.length === 0 ? (
           <p className="mt-2 text-sm text-slate-500">
-            Ainda sem favoritos no teu perfil. Explora o feed e guarda filmes que gostes.
+            Ainda sem favoritos no seu perfil. Explore o feed e guarde filmes que goste.
           </p>
         ) : (
           <ul className="mt-3 max-h-64 space-y-2 overflow-y-auto">
