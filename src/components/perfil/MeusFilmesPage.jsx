@@ -107,8 +107,8 @@ export default function MeusFilmesPage() {
             <div className="min-w-0">
               <h1 className="text-lg font-bold text-slate-900 sm:text-xl">Os meus filmes</h1>
               <p className="mt-1 max-w-2xl text-sm text-slate-600">
-                Lista dos títulos que guardaste no perfil. Abre um filme para comentar ou remove da coleção quando
-                quiseres.
+                Lista dos títulos que guardou no perfil. Abra um filme para comentar ou remova da coleção quando
+                quiser.
               </p>
             </div>
           </div>
@@ -144,9 +144,9 @@ export default function MeusFilmesPage() {
       ) : favoritosLista.length === 0 ? (
         <div className="rounded-2xl border border-slate-200 bg-white px-4 py-12 text-center shadow-sm">
           <Film className="mx-auto h-10 w-10 text-slate-300" />
-          <p className="mt-3 text-sm font-medium text-slate-800">Ainda não tens filmes guardados</p>
+          <p className="mt-3 text-sm font-medium text-slate-800">Você ainda não tem filmes guardados</p>
           <p className="mt-1 text-sm text-slate-500">
-            Explora o início, escolhe um título e usa o coração para adicionar aos favoritos.
+            Explore o início, escolha um título e use o coração para adicionar aos favoritos.
           </p>
         </div>
       ) : vista === 'grid' ? (

@@ -1,6 +1,6 @@
-// FilmeDetalheModal.jsx — overlay com sinopse, favorito e CRUD de comentários (estado local, sem re-fetch global).
+// FilmeDetalheModal.jsx — overlay com sinopse, favorito e CRUD de comentários (orquestra subcomponentes).
 import { useCallback, useEffect, useState } from 'react';
-import { X, Heart, Star, MessageCircle, Pencil, Trash2, Loader2 } from 'lucide-react';
+import { X, Heart, Star } from 'lucide-react';
 import { posterUrl } from '../../services/tmdb';
 import {
   apagarComentario,
@@ -11,21 +11,9 @@ import {
 import { mensagemErroApi } from '../../services/api';
 import { useToast } from '../../hooks/useToast';
 import ConfirmDialog from '../ui/ConfirmDialog';
+import ComentariosSection from './ComentariosSection';
 
-// Limite alinhado ao que a API aceita de forma prática (evita textos enormes na BD).
 const MAX_CORPO = 8000;
-
-function formatarData(iso) {
-  if (!iso) return '';
-  try {
-    return new Date(iso).toLocaleString('pt-PT', {
-      dateStyle: 'short',
-      timeStyle: 'short',
-    });
-  } catch {
-    return '';
-  }
-}
 
 export default function FilmeDetalheModal({
   aberto,
@@ -86,7 +74,7 @@ export default function FilmeDetalheModal({
       if (!filme?.id || enviando) return;
       const corpo = textoNovo.trim();
       if (!corpo) {
-        toastError('Escreve algo antes de publicar.');
+        toastError('Escreva algo antes de publicar.');
         return;
       }
       if (corpo.length > MAX_CORPO) {
@@ -251,136 +239,26 @@ export default function FilmeDetalheModal({
                 }`}
               >
                 <Heart className={`w-5 h-5 ${favorito ? 'fill-current' : ''}`} />
-                {favorito ? 'Nos teus favoritos' : 'Adicionar aos favoritos'}
+                {favorito ? 'Nos seus favoritos' : 'Adicionar aos favoritos'}
               </button>
             ) : null}
 
-            <section className="mt-8 border-t border-slate-200 pt-6" aria-labelledby="comentarios-titulo">
-              <h3
-                id="comentarios-titulo"
-                className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-500"
-              >
-                <MessageCircle className="w-4 h-4" />
-                Discussão
-              </h3>
-              <p className="mt-1 text-xs text-slate-400">
-                Comentários visíveis para toda a comunidade com sessão iniciada.
-              </p>
-
-              {comentariosCarregando ? (
-                <div className="mt-4 space-y-3">
-                  <div className="h-16 animate-pulse rounded-xl bg-slate-100" />
-                  <div className="h-16 animate-pulse rounded-xl bg-slate-100" />
-                </div>
-              ) : comentarios.length === 0 ? (
-                <p className="mt-4 text-sm text-slate-500">Ainda não há comentários neste filme.</p>
-              ) : (
-                <ul className="mt-4 space-y-3">
-                  {comentarios.map((c) => (
-                    <li
-                      key={c.id}
-                      className="rounded-xl border border-slate-100 bg-slate-50/80 px-4 py-3 text-sm"
-                    >
-                      <div className="flex flex-wrap items-start justify-between gap-2">
-                        <div>
-                          <span className="font-medium text-slate-800">{c.autorNome ?? 'Utilizador'}</span>
-                          <span className="text-slate-400 mx-1.5">·</span>
-                          <time className="text-xs text-slate-500" dateTime={c.criadoEm}>
-                            {formatarData(c.criadoEm)}
-                          </time>
-                          {c.editadoEm && c.editadoEm !== c.criadoEm ? (
-                            <span className="text-xs text-slate-400 ml-1">(editado)</span>
-                          ) : null}
-                        </div>
-                        {c.souAutor ? (
-                          <div className="flex items-center gap-1">
-                            <button
-                              type="button"
-                              onClick={() => iniciarEdicao(c)}
-                              className="rounded-lg p-1.5 text-slate-500 hover:bg-white hover:text-violet-600"
-                              aria-label="Editar comentário"
-                            >
-                              <Pencil className="w-4 h-4" />
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setApagarId(c.id)}
-                              className="rounded-lg p-1.5 text-slate-500 hover:bg-white hover:text-red-600"
-                              aria-label="Apagar comentário"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                        ) : null}
-                      </div>
-                      {editingId === c.id ? (
-                        <div className="mt-2 space-y-2">
-                          <textarea
-                            value={textoEdicao}
-                            onChange={(e) => setTextoEdicao(e.target.value)}
-                            rows={3}
-                            maxLength={MAX_CORPO}
-                            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20"
-                          />
-                          <div className="flex flex-wrap gap-2">
-                            <button
-                              type="button"
-                              disabled={gravandoEdicao}
-                              onClick={guardarEdicao}
-                              className="inline-flex items-center gap-1.5 rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-violet-700 disabled:opacity-60"
-                            >
-                              {gravandoEdicao ? (
-                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                              ) : null}
-                              Salvar
-                            </button>
-                            <button
-                              type="button"
-                              disabled={gravandoEdicao}
-                              onClick={cancelarEdicao}
-                              className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
-                            >
-                              Cancelar
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <p className="mt-2 text-slate-700 whitespace-pre-wrap break-words">{c.corpo}</p>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              <form onSubmit={enviarComentario} className="mt-6 space-y-2">
-                <label htmlFor="novo-comentario" className="sr-only">
-                  Novo comentário
-                </label>
-                <textarea
-                  id="novo-comentario"
-                  value={textoNovo}
-                  onChange={(e) => setTextoNovo(e.target.value)}
-                  placeholder="Escreve um comentário…"
-                  rows={3}
-                  maxLength={MAX_CORPO}
-                  disabled={enviando}
-                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-500/20 disabled:opacity-60"
-                />
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-xs text-slate-400">
-                    {textoNovo.length}/{MAX_CORPO}
-                  </span>
-                  <button
-                    type="submit"
-                    disabled={enviando || !textoNovo.trim()}
-                    className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50 disabled:pointer-events-none"
-                  >
-                    {enviando ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                    Publicar
-                  </button>
-                </div>
-              </form>
-            </section>
+            <ComentariosSection
+              comentarios={comentarios}
+              comentariosCarregando={comentariosCarregando}
+              textoNovo={textoNovo}
+              setTextoNovo={setTextoNovo}
+              enviando={enviando}
+              onEnviar={enviarComentario}
+              editingId={editingId}
+              textoEdicao={textoEdicao}
+              setTextoEdicao={setTextoEdicao}
+              gravandoEdicao={gravandoEdicao}
+              onIniciarEdicao={iniciarEdicao}
+              onCancelarEdicao={cancelarEdicao}
+              onGuardarEdicao={guardarEdicao}
+              setApagarId={setApagarId}
+            />
           </div>
         </div>
         </div>
@@ -391,7 +269,7 @@ export default function FilmeDetalheModal({
         onClose={() => !apagando && setApagarId(null)}
         onConfirm={confirmarApagar}
         title="Apagar comentário"
-        message="Tens a certeza? Esta ação não pode ser desfeita."
+        message="Tem certeza? Esta ação não pode ser desfeita."
       />
     </>
   );

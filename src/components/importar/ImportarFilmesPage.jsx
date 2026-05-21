@@ -13,16 +13,7 @@ import { mensagemErroApi } from '../../services/api';
 import { getKeycloak } from '../../keycloak';
 import { getMovieDetails, getTmdbApiKey, posterUrl, searchMovies } from '../../services/tmdb';
 import { useToast } from '../../hooks/useToast';
-
-// Atrasa o termo de pesquisa para não disparar uma requisição por tecla (alivia API e TMDB).
-function useDebouncedValue(value, delay) {
-  const [d, setD] = useState(value);
-  useEffect(() => {
-    const t = setTimeout(() => setD(value), 400);
-    return () => clearTimeout(t);
-  }, [value, delay]);
-  return d;
-}
+import { useDebouncedValue } from '../../hooks/useDebouncedValue';
 
 export default function ImportarFilmesPage() {
   const [q, setQ] = useState('');
@@ -145,7 +136,7 @@ export default function ImportarFilmesPage() {
         }
         if (extrairPrimeiroGeneroTmdbId(fonte) == null) {
           toastError(
-            'O TMDB não indicou gênero para este filme. Escolhe outro título ou verifica os dados no TMDB.',
+            'O TMDB não indicou gênero para este filme. Escolha outro título ou verifique os dados no TMDB.',
           );
           return;
         }
@@ -194,7 +185,7 @@ export default function ImportarFilmesPage() {
           type="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Escreve pelo menos 2 caracteres…"
+          placeholder="Escreva pelo menos 2 caracteres…"
           autoComplete="off"
           className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-slate-900 shadow-sm outline-none focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-500/20"
         />
@@ -205,24 +196,24 @@ export default function ImportarFilmesPage() {
 
       {!temChaveTmdb ? (
         <p className="mb-8 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-          Para importar do catálogo externo TMDB, define{' '}
+          Para importar do catálogo externo TMDB, defina{' '}
           <code className="rounded bg-amber-100 px-1">VITE_TMDB_API_KEY</code> no{' '}
           <code className="rounded bg-amber-100 px-1">.env</code> ou <code className="rounded bg-amber-100 px-1">.env.development</code> e
-          reinicia o Vite. Continuas a poder pesquisar filmes que já existem na plataforma.
+          reinicie o Vite. Você continua podendo pesquisar filmes que já existem na plataforma.
         </p>
       ) : (
         <p className="mb-6 rounded-xl border border-slate-200 bg-slate-50/80 px-4 py-2.5 text-xs text-slate-600">
           {getKeycloak()?.authenticated ? (
             <>
               Com sessão iniciada, a <strong>lista oficial de gêneros do TMDB</strong> é atualizada automaticamente ao
-              abrires esta página. Ao importar um filme, gêneros em falta são criados na mesma.
+              abrir esta página. Ao importar um filme, gêneros em falta são criados na mesma.
               {generos.length > 0 ? (
                 <span className="text-slate-500"> ({generos.length} gênero(s) na base.)</span>
               ) : null}
             </>
           ) : (
             <>
-              <strong>Inicia sessão</strong> para carregar a lista completa de gêneros do TMDB; mesmo sem isso, podes
+              <strong>Inicie sessão</strong> para carregar a lista completa de gêneros do TMDB; mesmo sem isso, pode
               importar filmes — cada filme cria o seu gênero na base se for preciso.
             </>
           )}
@@ -230,7 +221,7 @@ export default function ImportarFilmesPage() {
       )}
 
       {q.trim().length > 0 && q.trim().length < 2 ? (
-        <p className="text-sm text-slate-500">Indica pelo menos 2 caracteres para pesquisar.</p>
+        <p className="text-sm text-slate-500">Indique pelo menos 2 caracteres para pesquisar.</p>
       ) : null}
 
       {debounced.trim().length >= 2 ? (

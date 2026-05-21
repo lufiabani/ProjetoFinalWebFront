@@ -15,7 +15,7 @@ export function posterUrl(posterPath, size = 'w500') {
 async function tmdbFetch(path, searchParams) {
   const key = getTmdbApiKey();
   if (!key) {
-    throw new Error('Defina VITE_TMDB_API_KEY no ficheiro .env para usar o catálogo TMDB.');
+    throw new Error('Defina VITE_TMDB_API_KEY no arquivo .env para usar o catálogo TMDB.');
   }
   const url = new URL(`${TMDB_API}${path}`);
   url.searchParams.set('api_key', key);

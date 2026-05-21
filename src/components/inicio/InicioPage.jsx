@@ -22,9 +22,9 @@ export default function InicioPage() {
   const [filmesCarregando, setFilmesCarregando] = useState(true);
   const [modalFilme, setModalFilme] = useState(null);
   const [modalAberto, setModalAberto] = useState(false);
-  const [vistaFilmo, setVistaFilmo] = useState('lista');
-  const [ordenacaoFilmo, setOrdenacaoFilmo] = useState('comunidade');
-  const [filtroNomeFilmo, setFiltroNomeFilmo] = useState('');
+  const [vistaFilme, setVistaFilme] = useState('lista');
+  const [ordenacaoFilme, setOrdenacaoFilme] = useState('comunidade');
+  const [filtroNomeFilme, setFiltroNomeFilme] = useState('');
   const [generos, setGeneros] = useState([]);
   const [generoFiltroId, setGeneroFiltroId] = useState('');
   const [comentariosDestaque, setComentariosDestaque] = useState([]);
@@ -235,7 +235,7 @@ export default function InicioPage() {
   const favoritoModal = modalFilme ? isFavorito(modalFilme.id) : false;
 
   const filmesFiltrados = useMemo(() => {
-    const q = filtroNomeFilmo.trim().toLowerCase();
+    const q = filtroNomeFilme.trim().toLowerCase();
     const porGenero =
       generoFiltroId === ''
         ? filmes
@@ -246,18 +246,18 @@ export default function InicioPage() {
       const o = (f.tituloOriginal ?? f.filmeDescricao?.tituloOriginal ?? '').toLowerCase();
       return t.includes(q) || o.includes(q);
     });
-  }, [filmes, filtroNomeFilmo, generoFiltroId]);
+  }, [filmes, filtroNomeFilme, generoFiltroId]);
 
   const filmesOrdenados = useMemo(() => {
     const arr = [...filmesFiltrados];
-    if (ordenacaoFilmo === 'comunidade') {
+    if (ordenacaoFilme === 'comunidade') {
       return arr;
     }
-    if (ordenacaoFilmo === 'titulo') {
+    if (ordenacaoFilme === 'titulo') {
       arr.sort((a, b) =>
         (a.titulo || '').localeCompare(b.titulo || '', 'pt', { sensitivity: 'base' }),
       );
-    } else if (ordenacaoFilmo === 'recentes') {
+    } else if (ordenacaoFilme === 'recentes') {
       const ms = (f) => {
         const raw = f.atualizadoEm ?? f.criadoEm;
         if (!raw) return 0;
@@ -265,14 +265,14 @@ export default function InicioPage() {
         return Number.isNaN(t) ? 0 : t;
       };
       arr.sort((a, b) => ms(b) - ms(a));
-    } else if (ordenacaoFilmo === 'estreia') {
+    } else if (ordenacaoFilme === 'estreia') {
       const ms = (f) => {
         if (!f.dataLancamento) return 0;
         const t = new Date(f.dataLancamento).getTime();
         return Number.isNaN(t) ? 0 : t;
       };
       arr.sort((a, b) => ms(b) - ms(a));
-    } else if (ordenacaoFilmo === 'notaTmdb') {
+    } else if (ordenacaoFilme === 'notaTmdb') {
       const n = (f) => {
         const v = f.notaMediaTmdb ?? f.filmeDescricao?.notaMediaTmdb;
         if (v == null || Number.isNaN(Number(v))) return -1;
@@ -281,7 +281,7 @@ export default function InicioPage() {
       arr.sort((a, b) => n(b) - n(a));
     }
     return arr;
-  }, [filmesFiltrados, ordenacaoFilmo]);
+  }, [filmesFiltrados, ordenacaoFilme]);
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6 px-3 py-4 sm:px-4 sm:py-6 lg:flex-row lg:gap-8 lg:px-8">
@@ -298,14 +298,14 @@ export default function InicioPage() {
             </div>
             <div className="flex min-w-0 flex-1 flex-col justify-center gap-4 text-center sm:text-left">
               <p className="text-sm font-medium leading-relaxed text-white/95 sm:text-base">
-                Explora títulos na base, compara a nota TMDB com o burburinho da comunidade e deixa o teu comentário
+                Explore títulos na base, compare a nota TMDB com o burburinho da comunidade e deixe seu comentário
                 nos filmes que te marcam.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-2 rounded-2xl bg-black/15 px-3 py-2.5 text-xs text-white/95 ring-1 ring-white/25 sm:justify-start sm:text-sm">
                 <Sparkles className="h-4 w-4 shrink-0 text-amber-200" />
                 <span>
-                  Dica: ordena por <span className="font-semibold">Melhor nota TMDB</span> ou filtra por gênero para
-                  afinar a tua descoberta.
+                  Dica: ordene por <span className="font-semibold">Melhor nota TMDB</span> ou filtre por gênero para
+                  afinar a sua descoberta.
                 </span>
               </div>
             </div>
@@ -328,7 +328,7 @@ export default function InicioPage() {
             </div>
           ) : comentariosDestaque.length === 0 ? (
             <p className="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-3 py-6 text-center text-sm text-slate-500">
-              Ainda não há comentários públicos. Sê o primeiro a partilhar uma opinião num filme.
+              Ainda não há comentários públicos. Seja o primeiro a compartilhar uma opinião num filme.
             </p>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -387,7 +387,7 @@ export default function InicioPage() {
             </div>
           ) : filmes.length === 0 ? (
             <p className="rounded-2xl border border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-500">
-              Ainda não há filmes na base. Quando existirem registos (por exemplo após sincronização ou
+              Ainda não há filmes na base. Quando existirem registros (por exemplo após sincronização ou
               importação), aparecem aqui para todos comentarem.
             </p>
           ) : (
@@ -400,12 +400,12 @@ export default function InicioPage() {
                 >
                   <button
                     type="button"
-                    onClick={() => setVistaFilmo('lista')}
+                    onClick={() => setVistaFilme('lista')}
                     title="Vista em lista"
                     aria-label="Vista em lista"
-                    aria-pressed={vistaFilmo === 'lista'}
+                    aria-pressed={vistaFilme === 'lista'}
                     className={`inline-flex items-center justify-center rounded-lg p-2 transition-colors ${
-                      vistaFilmo === 'lista'
+                      vistaFilme === 'lista'
                         ? 'bg-white text-fuchsia-700 shadow-sm'
                         : 'text-slate-600 hover:text-slate-900'
                     }`}
@@ -414,12 +414,12 @@ export default function InicioPage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setVistaFilmo('grid')}
+                    onClick={() => setVistaFilme('grid')}
                     title="Vista em grelha"
                     aria-label="Vista em grelha"
-                    aria-pressed={vistaFilmo === 'grid'}
+                    aria-pressed={vistaFilme === 'grid'}
                     className={`inline-flex items-center justify-center rounded-lg p-2 transition-colors ${
-                      vistaFilmo === 'grid'
+                      vistaFilme === 'grid'
                         ? 'bg-white text-fuchsia-700 shadow-sm'
                         : 'text-slate-600 hover:text-slate-900'
                     }`}
@@ -431,8 +431,8 @@ export default function InicioPage() {
                 <label className="flex min-w-0 flex-1 flex-col gap-1 sm:min-w-[200px] sm:max-w-[240px]">
                   <span className="sr-only">Ordenar por</span>
                   <select
-                    value={ordenacaoFilmo}
-                    onChange={(e) => setOrdenacaoFilmo(e.target.value)}
+                    value={ordenacaoFilme}
+                    onChange={(e) => setOrdenacaoFilme(e.target.value)}
                     className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-500/20"
                   >
                     <option value="comunidade">Popular na comunidade</option>
@@ -463,8 +463,8 @@ export default function InicioPage() {
                   <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                   <input
                     type="search"
-                    value={filtroNomeFilmo}
-                    onChange={(e) => setFiltroNomeFilmo(e.target.value)}
+                    value={filtroNomeFilme}
+                    onChange={(e) => setFiltroNomeFilme(e.target.value)}
                     placeholder="Filtrar por nome…"
                     autoComplete="off"
                     className="w-full rounded-xl border border-slate-200 bg-slate-50/80 py-2 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-fuchsia-400 focus:bg-white focus:ring-2 focus:ring-fuchsia-500/20"
@@ -474,9 +474,9 @@ export default function InicioPage() {
 
               {filmesOrdenados.length === 0 ? (
                 <p className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-6 text-center text-sm text-amber-900">
-                  Nenhum filme corresponde ao filtro. Limpa o texto ou experimenta outro termo.
+                  Nenhum filme corresponde ao filtro. Limpe o texto ou experimente outro termo.
                 </p>
-              ) : vistaFilmo === 'grid' ? (
+              ) : vistaFilme === 'grid' ? (
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4">
                   {filmesOrdenados.map((f) => (
                     <FilmeGridCard
